@@ -1,0 +1,31 @@
+name: Build SAGE Image
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Get app version from package.json
+      run: echo "VERSION=$(jq -r .version package.json)" >> $GITHUB_ENV
+
+    - name: Extract short commit hash
+      run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+    - name: Construct full image tag
+      run: echo "FULL_IMAGE_TAG=harbor.library.tamu.edu/tomcatapps/sage:${{ env.VERSION }}-${{ env.SHORT_SHA }}" >> $GITHUB_ENV
+    
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{ env.FULL_IMAGE_TAG }}
+
+    - name: List and verify the image
+      run: docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "${{ env.FULL_IMAGE_TAG }}"    
