@@ -28,4 +28,4 @@ jobs:
       run: docker build . --file Dockerfile --tag ${{ env.FULL_IMAGE_TAG }}
 
     - name: List and verify the image
-      run: docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "${{ env.FULL_IMAGE_TAG }}"    
+      run: docker images --format "{{.Repository}}:{{.Tag}}" | grep "${{ env.FULL_IMAGE_TAG }}"    
