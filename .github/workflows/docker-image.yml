@@ -41,3 +41,6 @@ jobs:
     
     - name: Remove image from node
       run: docker image rm ${{ env.FULL_IMAGE_TAG }}
+
+    - name: Swap image using kubectl
+      run: kubectl set image deployment/sage sage=${{ env.FULL_IMAGE_TAG }} -n sage
