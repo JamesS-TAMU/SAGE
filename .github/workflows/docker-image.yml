@@ -31,7 +31,7 @@ jobs:
       run: docker image ls --format "{{.Repository}}:{{.Tag}}" | grep "${{ env.FULL_IMAGE_TAG }}"
 
     - name: Log in to Harbor using Robot Account
-      run: echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | docker login harbor.library.tamu.edu -u "${{ secrets.HARBOR_ROBOT_USERNAME }}" --password-stdin
+      run: echo '${{ secrets.HARBOR_ROBOT_TOKEN }}' | docker login harbor.library.tamu.edu --username '${{ secrets.HARBOR_ROBOT_USERNAME }}' --password-stdin
 
     - name: Push image to harbor
       run: docker image push ${{ env.FULL_IMAGE_TAG }}
